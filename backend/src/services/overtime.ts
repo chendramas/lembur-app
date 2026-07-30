@@ -1,9 +1,9 @@
 import prisma from "../prisma";
 import { JenisHari } from "@prisma/client";
 
-// Round UP to nearest 30 minutes
-function roundToNearest30(minutes: number): number {
-  return Math.ceil(minutes / 30) * 30;
+// Round UP to nearest full hour
+function roundToNearestHour(minutes: number): number {
+  return Math.ceil(minutes / 60) * 60;
 }
 
 // Get multiplier for a specific hour
@@ -30,27 +30,18 @@ export function calculateOvertime(
   if (rawMinutes <= 0) rawMinutes += 24 * 60; // cross midnight
 
   const totalMenit = rawMinutes;
-  const roundedMinutes = roundToNearest30(rawMinutes);
-  const totalJam = roundedMinutes / 60;
+  const roundedMinutes = roundToNearestHour(rawMinutes);
+  const totalJam = roundedMinutes / 60; // selalu integer
 
   const upahPerJam = Math.floor(gajiPokok / 173);
   const detail: Array<{ jam: number; multiplier: number; upah: number }> = [];
   let totalUpah = 0;
 
-  // Hitung per menit untuk akurasi pecahan jam
-  let menitTersisa = roundedMinutes;
-  let jamKe = 1;
-
-  while (menitTersisa > 0) {
-    const menitDiJamIni = Math.min(menitTersisa, 60);
-    const proporsi = menitDiJamIni / 60; // berapa proporsi jam penuh (0.5 untuk 30 menit, 1.0 untuk 60 menit)
-    const multiplier = getMultiplier(jenisHari, jamKe);
-    const upah = Math.floor(upahPerJam * multiplier * proporsi);
-    
-    detail.push({ jam: jamKe, multiplier, upah });
+  for (let i = 1; i <= totalJam; i++) {
+    const multiplier = getMultiplier(jenisHari, i);
+    const upah = Math.floor(upahPerJam * multiplier);
+    detail.push({ jam: i, multiplier, upah });
     totalUpah += upah;
-    menitTersisa -= menitDiJamIni;
-    jamKe++;
   }
 
   return { totalMenit, totalJam, upahLembur: totalUpah, detail };

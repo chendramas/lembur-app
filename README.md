@@ -109,11 +109,11 @@ total_upah = SUM(upah_per_jam × multiplier)
 - Jam ke-9 dst: × 4.0
 
 ### Kebijakan Pembulatan
-Pembulatan ke atas per 30 menit. Contoh:
-- 60 menit → 1.0 jam
-- 62 menit → 1.5 jam
-- 90 menit → 1.5 jam
-- 91 menit → 2.0 jam
+Pembulatan ke atas per jam penuh (menguntungkan karyawan). Contoh:
+- 60 menit → 1 jam
+- 62 menit → 2 jam
+- 90 menit → 2 jam
+- 91 menit → 2 jam
 
 ## License
 
