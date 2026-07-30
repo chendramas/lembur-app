@@ -4,7 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { formatRupiah } from "../../lib/utils";
 import api from "../../lib/api";
 import type { Employee } from "../../types";
-import { ArrowLeft, AlertTriangle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function SPLForm() {
   const { id } = useParams();
@@ -56,10 +56,8 @@ export default function SPLForm() {
     }
     setPreview({ totalJam, upahLembur: total });
 
-    const ws: string[] = [];
-    if (totalJam > 4) ws.push(`Lembur ${totalJam} jam melebihi batas 4 jam/hari`);
-    setWarnings(ws);
-  }, [employeeId, jamMulai, jamSelesai, jenisHari, employees]);
+    setWarnings([]);
+ }, [employeeId, jamMulai, jamSelesai, jenisHari, employees]);
 
   // Auto-detect jenis hari
   useEffect(() => {
@@ -106,14 +104,6 @@ export default function SPLForm() {
 
       <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
         {error && <div className="bg-red-50 text-red-600 text-sm px-4 py-2 rounded-lg">{error}</div>}
-        {warnings.length > 0 && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-yellow-700 font-medium text-sm mb-2"><AlertTriangle size={16} /> Peringatan</div>
-            {warnings.map((w, i) => <p key={i} className="text-sm text-yellow-600">{w}</p>)}
-            <p className="text-xs text-yellow-500 mt-2">Isi catatan justifikasi di bawah untuk melanjutkan.</p>
-          </div>
-        )}
-
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Karyawan</label>
           <select value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" required>
@@ -143,11 +133,11 @@ export default function SPLForm() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Jam Mulai</label>
-            <input type="time" value={jamMulai} onChange={(e) => setJamMulai(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" required />
+            <input type="time" value={jamMulai} onChange={(e) => setJamMulai(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" required />
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Jam Selesai</label>
-            <input type="time" value={jamSelesai} onChange={(e) => setJamSelesai(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" required />
+            <input type="time" value={jamSelesai} onChange={(e) => setJamSelesai(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" required />
           </div>
         </div>
 
@@ -168,13 +158,6 @@ export default function SPLForm() {
           <label className="block text-sm font-medium text-slate-700 mb-1">Alasan / Pekerjaan</label>
           <textarea value={alasan} onChange={(e) => setAlasan(e.target.value)} rows={3} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" required />
         </div>
-
-        {warnings.length > 0 && (
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Catatan Justifikasi</label>
-            <textarea value={catatanRevisi} onChange={(e) => setCatatanRevisi(e.target.value)} rows={2} className="w-full px-3 py-2 border border-yellow-300 rounded-lg text-sm" placeholder="Jelaskan alasan melebihi batas lembur..." />
-          </div>
-        )}
 
         <div className="flex gap-3 pt-2">
           <button type="submit" disabled={loading} className="bg-emerald-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50">
