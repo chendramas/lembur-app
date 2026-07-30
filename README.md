@@ -84,10 +84,10 @@ Frontend berjalan di http://localhost:5173
 | Username | Password | Role |
 |----------|----------|------|
 | admin | admin123 | Admin |
-| supervisor1 | pass123 | Supervisor (Produksi) |
-| supervisor2 | pass123 | Supervisor (Gudang) |
-| kabag1 | pass123 | Kabag (Produksi) |
-| kabag2 | pass123 | Kabag (Gudang) |
+| supervisorproduksi | pass123 | Supervisor (Produksi) |
+| supervisorgudang | pass123 | Supervisor (Gudang) |
+| kabagproduksi | pass123 | Kabag (Produksi) |
+| kabaggudang | pass123 | Kabag (Gudang) |
 | pga1 | pass123 | PGA |
 
 ## Perhitungan Lembur

@@ -31,16 +31,16 @@ async function main() {
     data: { nama: "Administrator", username: "admin", passwordHash: hash, role: "ADMIN" },
   });
   const supervisor1 = await prisma.user.create({
-    data: { nama: "Supervisor Produksi", username: "supervisor1", passwordHash: passHash, role: "SUPERVISOR", sectionId: produksi.id },
+    data: { nama: "Supervisor Produksi", username: "supervisorproduksi", passwordHash: passHash, role: "SUPERVISOR", sectionId: produksi.id },
   });
   const supervisor2 = await prisma.user.create({
-    data: { nama: "Supervisor Gudang", username: "supervisor2", passwordHash: passHash, role: "SUPERVISOR", sectionId: gudang.id },
+    data: { nama: "Supervisor Gudang", username: "supervisorgudang", passwordHash: passHash, role: "SUPERVISOR", sectionId: gudang.id },
   });
   const kabag1 = await prisma.user.create({
-    data: { nama: "Kabag Produksi", username: "kabag1", passwordHash: passHash, role: "KABAG", sectionId: produksi.id },
+    data: { nama: "Kabag Produksi", username: "kabagproduksi", passwordHash: passHash, role: "KABAG", sectionId: produksi.id },
   });
   const kabag2 = await prisma.user.create({
-    data: { nama: "Kabag Gudang", username: "kabag2", passwordHash: passHash, role: "KABAG", sectionId: gudang.id },
+    data: { nama: "Kabag Gudang", username: "kabaggudang", passwordHash: passHash, role: "KABAG", sectionId: gudang.id },
   });
   const pga1 = await prisma.user.create({
     data: { nama: "PGA Utama", username: "pga1", passwordHash: passHash, role: "PGA" },
