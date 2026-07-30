@@ -1,6 +1,8 @@
-# SPL App — Surat Perintah Lembur
+# Lembur App — Surat Perintah Lembur
 
 Aplikasi pengelolaan Surat Perintah Lembur (SPL) berbasis web untuk perusahaan dengan struktur organisasi section/bagian.
+
+**Repository:** https://github.com/chendramas/lembur-app
 
 ## Fitur
 
