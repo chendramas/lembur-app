@@ -4,9 +4,8 @@ import { authenticate, authorize, AuthRequest } from "../middleware/auth";
 
 const router = Router();
 router.use(authenticate);
-router.use(authorize("ADMIN"));
 
-// GET /
+// GET / — semua role bisa lihat (untuk dropdown SPL)
 router.get("/", async (req: AuthRequest, res: Response) => {
   try {
     const items = await prisma.employee.findMany({ include: { section: { select: { id: true, nama: true } } }, orderBy: { nama: "asc" } });
@@ -16,8 +15,8 @@ router.get("/", async (req: AuthRequest, res: Response) => {
   }
 });
 
-// POST /
-router.post("/", async (req: AuthRequest, res: Response) => {
+// POST / — admin only
+router.post("/", authorize("ADMIN"), async (req: AuthRequest, res: Response) => {
   try {
     const item = await prisma.employee.create({ data: { nama: req.body.nama, nip: req.body.nip, sectionId: req.body.sectionId, gajiPokok: parseInt(req.body.gajiPokok), jenisMingguKerja: req.body.jenisMingguKerja || "LIMA_HARI" } });
     res.status(201).json(item);
@@ -27,8 +26,8 @@ router.post("/", async (req: AuthRequest, res: Response) => {
   }
 });
 
-// PUT /:id
-router.put("/:id", async (req: AuthRequest, res: Response) => {
+// PUT /:id — admin only
+router.put("/:id", authorize("ADMIN"), async (req: AuthRequest, res: Response) => {
   try {
     const item = await prisma.employee.update({ where: { id: String(req.params.id) }, data: { nama: req.body.nama, nip: req.body.nip, sectionId: req.body.sectionId, gajiPokok: req.body.gajiPokok ? parseInt(req.body.gajiPokok) : undefined, jenisMingguKerja: req.body.jenisMingguKerja } });
     res.json(item);
@@ -38,8 +37,8 @@ router.put("/:id", async (req: AuthRequest, res: Response) => {
   }
 });
 
-// DELETE /:id
-router.delete("/:id", async (req: AuthRequest, res: Response) => {
+// DELETE /:id — admin only
+router.delete("/:id", authorize("ADMIN"), async (req: AuthRequest, res: Response) => {
   try {
     await prisma.employee.delete({ where: { id: String(req.params.id) } });
     res.json({ success: true });
