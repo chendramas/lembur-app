@@ -37,11 +37,20 @@ export function calculateOvertime(
   const detail: Array<{ jam: number; multiplier: number; upah: number }> = [];
   let totalUpah = 0;
 
-  for (let i = 1; i <= totalJam; i++) {
-    const multiplier = getMultiplier(jenisHari, i);
-    const upah = Math.floor(upahPerJam * multiplier);
-    detail.push({ jam: i, multiplier, upah });
+  // Hitung per menit untuk akurasi pecahan jam
+  let menitTersisa = roundedMinutes;
+  let jamKe = 1;
+
+  while (menitTersisa > 0) {
+    const menitDiJamIni = Math.min(menitTersisa, 60);
+    const proporsi = menitDiJamIni / 60; // berapa proporsi jam penuh (0.5 untuk 30 menit, 1.0 untuk 60 menit)
+    const multiplier = getMultiplier(jenisHari, jamKe);
+    const upah = Math.floor(upahPerJam * multiplier * proporsi);
+    
+    detail.push({ jam: jamKe, multiplier, upah });
     totalUpah += upah;
+    menitTersisa -= menitDiJamIni;
+    jamKe++;
   }
 
   return { totalMenit, totalJam, upahLembur: totalUpah, detail };
