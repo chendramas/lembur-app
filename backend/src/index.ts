@@ -16,9 +16,12 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    const allowed = process.env.FRONTEND_URL || "http://localhost:5173";
-    if (origin === allowed || origin.endsWith(".vercel.app")) return callback(null, true);
+    if (!origin) return callback(null, true); // curl, mobile apps
+    const allowed = [
+      process.env.FRONTEND_URL || "http://localhost:5173",
+      process.env.FRONTEND_URL_PROD || "", // set di Railway: https://lembur-app.vercel.app
+    ].filter(Boolean);
+    if (allowed.includes(origin)) return callback(null, true);
     callback(new Error("Not allowed by CORS"));
   },
 }));

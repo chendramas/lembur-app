@@ -1,6 +1,7 @@
 import { Router, Response } from "express";
 import prisma from "../prisma";
 import { authenticate, AuthRequest } from "../middleware/auth";
+import { WARNING_THRESHOLD_MINGGU, MAX_JAM_PER_MINGGU } from "../services/validation";
 
 const router = Router();
 router.use(authenticate);
@@ -68,13 +69,13 @@ router.get("/stats", async (req: AuthRequest, res: Response) => {
     const weeklyWarnings = [];
     for (const ws of weeklySpls) {
       const totalJam = (ws._sum.totalMenit || 0) / 60;
-      if (totalJam >= 14) {
+      if (totalJam >= WARNING_THRESHOLD_MINGGU) {
         const emp = await prisma.employee.findUnique({ where: { id: ws.employeeId } });
         weeklyWarnings.push({
           employeeId: ws.employeeId,
           employeeNama: emp?.nama,
           totalJam: Math.round(totalJam * 10) / 10,
-          exceeded: totalJam > 18,
+          exceeded: totalJam > MAX_JAM_PER_MINGGU,
         });
       }
     }

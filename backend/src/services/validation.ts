@@ -1,5 +1,10 @@
 import prisma from "../prisma";
 
+// Batas lembur - single source of truth
+export const MAX_JAM_PER_HARI = 4;
+export const MAX_JAM_PER_MINGGU = 18;
+export const WARNING_THRESHOLD_MINGGU = 14; // mulai warning sebelum batas 18 jam
+
 export async function validateOvertimeLimits(
   employeeId: string,
   tanggal: Date,
@@ -8,14 +13,14 @@ export async function validateOvertimeLimits(
 ): Promise<{ valid: boolean; warnings: string[] }> {
   const warnings: string[] = [];
 
-  // Check 4 jam/hari
+  // Check jam/hari
   const totalJamHari = totalMenit / 60;
-  if (totalJamHari > 4) {
-    warnings.push(`Lembur ${totalJamHari.toFixed(1)} jam/hari melebihi batas 4 jam. Diperlukan catatan justifikasi.`);
+  if (totalJamHari > MAX_JAM_PER_HARI) {
+    warnings.push(`Lembur ${totalJamHari.toFixed(1)} jam/hari melebihi batas ${MAX_JAM_PER_HARI} jam. Diperlukan catatan justifikasi.`);
   }
 
-  // Check 18 jam/minggu
-  const dayOfWeek = tanggal.getDay(); // 0=Sun, 1=Mon...
+  // Check jam/minggu
+  const dayOfWeek = tanggal.getDay();
   const monday = new Date(tanggal);
   monday.setDate(monday.getDate() - ((dayOfWeek + 6) % 7));
   monday.setHours(0, 0, 0, 0);
@@ -35,8 +40,8 @@ export async function validateOvertimeLimits(
   const weeklyMenit = weeklySpls.reduce((sum, s) => sum + s.totalMenit, 0) + totalMenit;
   const weeklyJam = weeklyMenit / 60;
 
-  if (weeklyJam > 18) {
-    warnings.push(`Total lembur minggu ini ${weeklyJam.toFixed(1)} jam melebihi batas 18 jam/minggu. Diperlukan catatan justifikasi.`);
+  if (weeklyJam > MAX_JAM_PER_MINGGU) {
+    warnings.push(`Total lembur minggu ini ${weeklyJam.toFixed(1)} jam melebihi batas ${MAX_JAM_PER_MINGGU} jam/minggu. Diperlukan catatan justifikasi.`);
   }
 
   return { valid: warnings.length === 0, warnings };
