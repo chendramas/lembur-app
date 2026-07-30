@@ -8,7 +8,7 @@ Aplikasi pengelolaan Surat Perintah Lembur (SPL) berbasis web untuk perusahaan d
 
 - **Workflow SPL**: Draft → Pengajuan Kabag → Pengajuan PGA → Approved (atau reject di tiap tahap)
 - **Role-Based Access Control**: Supervisor, Kepala Bagian (Kabag), PGA, Admin
-- **Perhitungan Lembur Otomatis**: Berdasarkan PP 35/2021 dengan multiplier berbeda untuk hari kerja dan hari libur
+- **Perhitungan Lembur Otomatis**: Dengan multiplier berbeda untuk hari kerja dan hari libur
 - **Validasi Batas Lembur**: Warning otomatis untuk 4 jam/hari dan 18 jam/minggu
 - **Audit Trail**: Riwayat lengkap setiap perubahan status SPL
 - **Data Absensi**: Perbandingan SPL vs absensi untuk validasi PGA

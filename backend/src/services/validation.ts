@@ -11,7 +11,7 @@ export async function validateOvertimeLimits(
   // Check 4 jam/hari
   const totalJamHari = totalMenit / 60;
   if (totalJamHari > 4) {
-    warnings.push(`Lembur ${totalJamHari.toFixed(1)} jam/hari melebihi batas 4 jam (PP 35/2021). Diperlukan catatan justifikasi.`);
+    warnings.push(`Lembur ${totalJamHari.toFixed(1)} jam/hari melebihi batas 4 jam. Diperlukan catatan justifikasi.`);
   }
 
   // Check 18 jam/minggu
@@ -36,7 +36,7 @@ export async function validateOvertimeLimits(
   const weeklyJam = weeklyMenit / 60;
 
   if (weeklyJam > 18) {
-    warnings.push(`Total lembur minggu ini ${weeklyJam.toFixed(1)} jam melebihi batas 18 jam/minggu (PP 35/2021). Diperlukan catatan justifikasi.`);
+    warnings.push(`Total lembur minggu ini ${weeklyJam.toFixed(1)} jam melebihi batas 18 jam/minggu. Diperlukan catatan justifikasi.`);
   }
 
   return { valid: warnings.length === 0, warnings };
