@@ -29,8 +29,8 @@ router.get("/stats", async (req: AuthRequest, res: Response) => {
 
     // Total biaya per section per bulan (current month)
     const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const startOfMonth = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
+    const endOfMonth = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 1));
 
     const sections = await prisma.section.findMany({
       include: {

@@ -38,8 +38,8 @@ router.get("/", async (req: AuthRequest, res: Response) => {
       const month = parseInt(bulan as string);
       const year = parseInt(tahun as string);
       where.tanggal = {
-        gte: new Date(year, month - 1, 1),
-        lt: new Date(year, month, 1),
+        gte: new Date(Date.UTC(year, month - 1, 1)),
+        lt: new Date(Date.UTC(year, month, 1)),
       };
     }
 

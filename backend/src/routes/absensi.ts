@@ -14,7 +14,7 @@ router.get("/", async (req: AuthRequest, res: Response) => {
     if (bulan && tahun) {
       const month = parseInt(bulan as string);
       const year = parseInt(tahun as string);
-      where.tanggal = { gte: new Date(year, month - 1, 1), lt: new Date(year, month, 1) };
+      where.tanggal = { gte: new Date(Date.UTC(year, month - 1, 1)), lt: new Date(Date.UTC(year, month, 1)) };
     }
     const items = await prisma.absensi.findMany({
       where,

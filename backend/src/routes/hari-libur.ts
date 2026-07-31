@@ -12,7 +12,7 @@ router.get("/", async (req: AuthRequest, res: Response) => {
     const where: any = {};
     if (tahun) {
       const year = parseInt(tahun as string);
-      where.tanggal = { gte: new Date(year, 0, 1), lt: new Date(year + 1, 0, 1) };
+      where.tanggal = { gte: new Date(Date.UTC(year, 0, 1)), lt: new Date(Date.UTC(year + 1, 0, 1)) };
     }
     const items = await prisma.hariLibur.findMany({ where, orderBy: { tanggal: "asc" } });
     res.json(items);
