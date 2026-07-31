@@ -273,6 +273,14 @@ router.post("/:id/approve", async (req: AuthRequest, res: Response) => {
     // Notify creator
     await notify(spl.createdById, `SPL Anda telah disetujui (${keStatus})`, spl.id);
 
+    // Notify PGA when Kabag approves (SPL masuk ke PGA)
+    if (keStatus === "PENGAJUAN_PGA") {
+      const pgaUsers = await prisma.user.findMany({ where: { role: "PGA" } });
+      for (const pga of pgaUsers) {
+        await notify(pga.id, `SPL baru menunggu persetujuan Anda`, spl.id);
+      }
+    }
+
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: "Gagal approve SPL" });
